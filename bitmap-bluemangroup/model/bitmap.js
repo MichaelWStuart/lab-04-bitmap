@@ -38,4 +38,14 @@ module.exports = class Bitmap {
     this.updateColorTable(rgbValues.join(''))
   }
 
+  grayscale() {
+    this.transformType = 'grayscale'
+    const rgbValues = [...this.colorTable].map(a => {
+      return [a.slice(0, 2), a.slice(2,4), a.slice(4, 6)].map(b => {
+        const rgbValue = (Math.abs(255 - parseInt(b, 16))).toString(16)
+        return rgbValue.length === 1 ? `0${rgbValue}` : rgbValue
+      }).join('')
+    })
+    this.updateColorTable(rgbValues.join(''))
+  }
 };
