@@ -4,7 +4,7 @@ module.exports = class Bitmap {
     this.size = buffer.readUInt32LE(2);
     this.offset = buffer.readUInt32LE(10);
     this.dibHeaderSize = buffer.readUInt32LE(14)
-    this.colorTable = buffer.toString('hex', 58, 182).match(/.{1,8}/g)
+    this.colorTable = buffer.toString('hex', 58, 186).match(/.{1,8}/g)
     this.bufferClone = buffer;
   }
 
