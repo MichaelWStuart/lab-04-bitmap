@@ -6,26 +6,25 @@ module.exports = class Bitmap {
     this.dibHeaderSize = buffer.readUInt32LE(14)
     this.colorTable = buffer.toString('hex', 58, 186).match(/.{1,8}/g)
     this.bufferClone = buffer;
-  }
-
-  printTheOriginalOs() {
-    console.log(this.os)
-  }
-
-  changeTheOs(value) {
-    this.bufferClone.writeInt16LE(value, 0)
+    this.transformType = '';
   }
 
   printTheBuffer() {
     console.log(this.bufferClone)
   }
 
-  printSize() {
-    console.log(`${this.size} bytes`)
-  }
-
   printColorTable() {
     console.log(this.colorTable)
+  }
+
+  updateColorTable(str) {
+    this.bufferClone.write(str, 58, 128, 'hex')
+  }
+
+  whitewash() {
+    this.transformType = 'whitewashed'
+    this.colorTable = [...this.colorTable].map(v => 'ffffff00')
+    this.updateColorTable(this.colorTable.join(''))
   }
 
 };
