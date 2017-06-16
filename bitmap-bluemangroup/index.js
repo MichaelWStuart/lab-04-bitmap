@@ -1,6 +1,6 @@
 const fs = require('fs')
 
-const Bitmap = require('./model/bitmap.js')
+const Bitmap = require('./bitmap.js')
 
 const filePaths = [
   './assets/bitmap.bmp',
@@ -19,8 +19,6 @@ parseBitmap(filePaths[0], (err, data) => {
   let bitmap = new Bitmap(data);
 
   //this is where we call our methods on the instantiated bitmap:
-
-  bitmap.printTheOriginalOs()
 
   bitmap.printTheBuffer()
 
