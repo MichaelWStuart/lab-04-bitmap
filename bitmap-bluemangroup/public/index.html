@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <script src="https://use.fontawesome.com/59f37b91f4.js"></script>
+    <link href="styles/base.css" rel="stylesheet" type="text/css">
+    <link href="styles/modules.css" rel="stylesheet" type="text/css">
+    <link href="styles/layout.css" rel="stylesheet" type="text/css">
+    <link href="https://fonts.googleapis.com/css?family=Quicksand" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/2.0.0/handlebars.js"></script>
+    <script id="eventlist-template" type="text/x-handlebars-template">
+      <ul class='event'>
+        <h3>{{name}}</h3>
+        <h5>{{time}}</h5>
+        <a>{{link}}</a>
+        <li>
+          <a class="description" id="">Description &rarr;</a>
+          {{{description}}}
+          <p>{{fee.label}}</p>
+          <p>{{fee.amount}}</p>
+        </li>
+        <button class="delete-button" data-id='{{id}}'>Hide Meetup</button>
+      </ul>
+    </script>
+  </head>
+  <body>
+
+    <div id="title-box">
+      <div id='logo'>
+        <img id="panda-icon" src="icons/dev-panda.png">
+        <h1 id="title">PANDA</h1>
+      </div>
+    </div>
+
+    <ul id="icons">
+      <a href="https://github.com/AlexisYan/dev-panda" class="fa fa-github fa-4x" aria-hidden="true"></a>
+      <a href='#' class="map-tab fa fa-map fa-4x" aria-hidden="true"></a>
+      <a href='#' class="about-tab fa fa-address-book fa-4x" aria-hidden="true"></a>
+    </ul>
+
+    <div id='landing'>
+      <div id="landing-body">
+        <p>Dev Panda is a quick, convienient way for developers to find and view tech meetups in their area.  With one click you can view local meetups, see details, and get an overall sense of what is happening in your area.</p>
+      </div>
+      <button id="find-meetups" type="button">Find Meetups!</button>
+    </div>
+
+    <div class='main' id='map'></div>
+    <ul class='main' id="list-events"></ul>
+
+    <div id="about-page">
+
+      <a href="https://github.com/StephanieDover">
+        <div class='profile'>
+          <img class='profile-pic' src="icons/stephanie.jpg">
+          <div class='profile-body'>
+            <h3 class='profile-name'>Stephanie</h3>
+            <p class='profile-text'>I'm passionate about learning and love coding!</p>
+          </div>
+        </div>
+      </a>
+
+      <a href="https://github.com/RyleeAndrews">
+        <div class='profile'>
+
+          <img class='profile-pic' src="icons/Rylee.jpg">
+          <div class='profile-body'>
+            <h3 class='profile-name'>Rylee</h3>
+            <p class='profile-text'>Part time ninja full time developer. Peace love and frybread grease.</p>
+
+          </div>
+        </div>
+      </a>
+
+      <a href="https://github.com/MichaelWStuart">
+        <div class='profile'>
+          <img class='profile-pic' src="https://avatars3.githubusercontent.com/u/18186778?v=3&s=460">
+          <div class='profile-body'>
+            <h3 class='profile-name'>Michael</h3>
+            <p class='profile-text'>I love javascript and I love codefellows.  Need I say more?</p>
+          </div>
+        </div>
+      </a>
+
+      <a href="https://github.com/AlexisYan">
+        <div class='profile'>
+          <img class='profile-pic' src="/icons/Screen Shot 2017-06-02 at 11.53.09 AM.png">
+          <div class='profile-body'>
+            <h3 class='profile-name'>Alexis</h3>
+            <p class='profile-text'>part of the best team in the world</p>
+          </div>
+        </div>
+      </a>
+
+    </div>
+
+    <script
+      src="https://code.jquery.com/jquery-3.2.1.min.js"
+      integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
+      crossorigin="anonymous"></script>
+    <script src="scripts/views.js" type="text/javascript"></script>
+    <script src="scripts/events.js" type="text/javascript"></script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBrkuWV8MgzB1vQZFVi6Nx8mhslLfufwR0&callback=initMap"
+    async defer></script>
+  </body>
+</html>
