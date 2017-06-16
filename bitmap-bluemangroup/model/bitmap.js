@@ -3,8 +3,10 @@ module.exports = class Bitmap {
     this.os = buffer.toString('utf8', 0, 2);
     this.size = buffer.readUInt32LE(2);
     this.offset = buffer.readUInt32LE(10);
-    this.dibHeaderSize = buffer.readUInt32LE(14);
-    this.colorTable = buffer.toString('hex', 58, 186).match(/.{1,8}/g);
+
+    this.dibHeaderSize = buffer.readUInt32LE(14)
+    this.colorTable = buffer.toString('hex', 55, this.offset-1).match(/.{1,8}/g)
+
     this.bufferClone = buffer;
     this.transformType = '';
   }
@@ -18,7 +20,8 @@ module.exports = class Bitmap {
   }
 
   updateColorTable(str) {
-    this.bufferClone.write(str, 58, 128, 'hex');
+
+    this.bufferClone.write(str, 55, ((this.offset-1-55)/8), 'hex')
   }
 
   inverse() {
@@ -32,6 +35,26 @@ module.exports = class Bitmap {
     this.updateColorTable(rgbValues.join(''));
   }
 
+
+  grayscale() {
+    this.transformType = 'grayscale'
+    const rgbValues = [...this.colorTable].map(a => {
+      // let intColors = [parseInt(a.slice(0, 2), 16), parseInt(a.slice(2,4), 16), parseInt(a.slice(4, 6), 16)];
+      let one = parseInt(a.slice(0,2), 16);
+      let two = parseInt(a.slice(2,4), 16);
+      let three = parseInt(a.slice(4, 6), 16);
+      let average = Math.floor((one + two + three)/3);
+      one = average.length === 1 ? `0${average.toString(16)}` : average.toString(16);
+      two = average.length === 1 ? `0${average.toString(16)}` : average.toString(16);
+      three = average.length === 1 ? `0${average.toString(16)}` : average.toString(16);
+      let rgbValue = [one, two, three].join('')+'00';
+      console.log(rgbValue);
+      return rgbValue;
+    })
+    console.log(rgbValues.join(''));
+     this.updateColorTable(rgbValues.join(''));
+  };
+
   blueify(){
     this.transformType = 'blueified';
     const rgbValues = [...this.colorTable].map(a => {
@@ -40,6 +63,7 @@ module.exports = class Bitmap {
         return rgb.length === 1 ? `0${rgb}` : rgb;
       }).join('');
     });
+
     this.updateColorTable(rgbValues.join(''));
   }
 };

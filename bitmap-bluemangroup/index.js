@@ -30,4 +30,5 @@ parseBitmap(filePaths[3], (err, data) => {          //parse
 
   createBitmap(filePaths[3], bitmap);                //create
 
+
 });
