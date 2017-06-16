@@ -21,12 +21,6 @@ module.exports = class Bitmap {
     this.bufferClone.write(str, 58, 128, 'hex')
   }
 
-  whitewash() {
-    this.transformType = 'whitewashed'
-    this.colorTable = [...this.colorTable].map(v => 'ffffff00')
-    this.updateColorTable(this.colorTable.join(''))
-  }
-
   inverse() {
     this.transformType = 'inversed'
     const rgbValues = [...this.colorTable].map(a => {
