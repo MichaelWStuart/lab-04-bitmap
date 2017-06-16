@@ -20,12 +20,6 @@ parseBitmap(filePaths[0], (err, data) => {
 
   //this is where we call our methods on the instantiated bitmap:
 
-  bitmap.printTheBuffer()
-
-  const arbitraryValue = '19777'
-
-  bitmap.changeTheOs(arbitraryValue)
-
-  bitmap.printTheBuffer()
+  bitmap.printColorTable()
 
 })

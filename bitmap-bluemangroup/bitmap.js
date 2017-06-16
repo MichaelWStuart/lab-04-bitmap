@@ -1,10 +1,10 @@
 module.exports = class Bitmap {
   constructor(buffer) {
-    this.os = buffer.readInt16LE(0)
-    // this.size = buffer.readUInt32LE(2);
-    // this.offset = buffer.readUInt32LE(10);
-    // this.DIBHeader = buffer.readUInt32LE(15, 54)
-    // this.colorTable = fileOps.readUINTwhatever(55, 1078)
+    this.os = buffer.toString('utf8', 0, 2)
+    this.size = buffer.readUInt32LE(2);
+    this.offset = buffer.readUInt32LE(10);
+    this.dibHeaderSize = buffer.readUInt32LE(14)
+    this.colorTable = buffer.toString('hex', 58, 182).match(/.{1,8}/g)
     this.bufferClone = buffer;
   }
 
@@ -18,6 +18,14 @@ module.exports = class Bitmap {
 
   printTheBuffer() {
     console.log(this.bufferClone)
+  }
+
+  printSize() {
+    console.log(`${this.size} bytes`)
+  }
+
+  printColorTable() {
+    console.log(this.colorTable)
   }
 
 };
