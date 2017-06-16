@@ -1,42 +1,40 @@
 module.exports = class Bitmap {
   constructor(buffer) {
-    this.os = buffer.toString('utf8', 0, 2)
+    this.os = buffer.toString('utf8', 0, 2);
     this.size = buffer.readUInt32LE(2);
     this.offset = buffer.readUInt32LE(10);
+
     this.dibHeaderSize = buffer.readUInt32LE(14)
     this.colorTable = buffer.toString('hex', 55, this.offset-1).match(/.{1,8}/g)
+
     this.bufferClone = buffer;
     this.transformType = '';
   }
 
   printTheBuffer() {
-    console.log(this.bufferClone)
+    console.log(this.bufferClone);
   }
 
   printColorTable() {
-    console.log(this.colorTable)
+    console.log(this.colorTable);
   }
 
   updateColorTable(str) {
+
     this.bufferClone.write(str, 55, ((this.offset-1-55)/8), 'hex')
   }
 
-  whitewash() {
-    this.transformType = 'whitewashed'
-    this.colorTable = [...this.colorTable].map(v => 'ffffff00')
-    this.updateColorTable(this.colorTable.join(''))
-  }
-
   inverse() {
-    this.transformType = 'inversed'
+    this.transformType = 'inversed';
     const rgbValues = [...this.colorTable].map(a => {
       return [a.slice(0, 2), a.slice(2,4), a.slice(4, 6)].map(b => {
-        const rgbValue = (Math.abs(255 - parseInt(b, 16))).toString(16)
-        return rgbValue.length === 1 ? `0${rgbValue}` : rgbValue
-      }).join('')
-    })
-    this.updateColorTable(rgbValues.join(''))
+        const rgbValue = (255 - parseInt(b, 16)).toString(16);
+        return rgbValue.length === 1 ? `0${rgbValue}` : rgbValue;
+      }).join('');
+    });
+    this.updateColorTable(rgbValues.join(''));
   }
+
 
   grayscale() {
     this.transformType = 'grayscale'
@@ -54,6 +52,18 @@ module.exports = class Bitmap {
       return rgbValue;
     })
     console.log(rgbValues.join(''));
+     this.updateColorTable(rgbValues.join(''));
+  };
+
+  blueify(){
+    this.transformType = 'blueified';
+    const rgbValues = [...this.colorTable].map(a => {
+      return [a.slice(0, 2), a.slice(2,4), a.slice(4, 6)].map((b, i) => {
+        let rgb = i === 0 ? 'ff' : Math.floor(parseInt(b,16)/2).toString(16);
+        return rgb.length === 1 ? `0${rgb}` : rgb;
+      }).join('');
+    });
+
     this.updateColorTable(rgbValues.join(''));
   }
 };
