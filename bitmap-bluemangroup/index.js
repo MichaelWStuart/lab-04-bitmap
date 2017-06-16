@@ -21,13 +21,13 @@ const createBitmap = (filePath, bitmap) => {
   })
 }
 
-parseBitmap(filePaths[0], (err, data) => {          //parse
+parseBitmap(filePaths[1], (err, data) => {          //parse
   if (err) return console.log(err)
 
   let bitmap = new Bitmap(data);                    //instantiate
 
-  bitmap.whitewash()                                //transform
+  bitmap.inverse()                                  //transform
 
-  createBitmap(filePaths[0], bitmap)                //create
+  createBitmap(filePaths[1], bitmap)                //create
 
 })
