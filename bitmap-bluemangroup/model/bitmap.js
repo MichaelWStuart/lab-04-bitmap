@@ -21,7 +21,6 @@ module.exports = class Bitmap {
   updateColorTable(str) {
 
     this.bufferClone.write(str, 54, 1078, 'hex')
-    // this.bufferClone.write(str, 54, 1078);
   }
 
   inverse() {
