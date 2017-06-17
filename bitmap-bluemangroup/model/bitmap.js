@@ -45,7 +45,7 @@ module.exports = class Bitmap {
   greyscale() {
     this.transformType = 'greyscale';
     for(var i = 0; i < this.colorTableBuffer.length; i+=4) {
-      let averageGrey = Math.floor((this.colorTableBuffer[i] = this.colorTableBuffer[i+1] = this.colorTableBuffer[i+2])/3);
+      let averageGrey = Math.floor((this.colorTableBuffer[i] + this.colorTableBuffer[i+1] + this.colorTableBuffer[i+2])/3);
       this.colorTableBuffer[i] = averageGrey;
       this.colorTableBuffer[i+1] = averageGrey;
       this.colorTableBuffer[i+2] = averageGrey;
