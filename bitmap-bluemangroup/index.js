@@ -21,14 +21,23 @@ const createBitmap = (filePath, bitmap) => {
   });
 };
 
-parseBitmap(filePaths[3], (err, data) => {          //parse
+parseBitmap(filePaths[2], (err, data) => {          //parse
   if (err) return console.log(err);
 
   let bitmap = new Bitmap(data);                    //instantiate
 
-  bitmap.blueify();                                 //transform
+  // bitmap.printTheBuffer();
+  // bitmap.printColorTable();
+  //
+  // bitmap.colorScale('blue');                         //transform
+  bitmap.colorScale('red');
+  // bitmap.colorScale('green');
+  // bitmap.blueify();
+  // bitmap.greyscale();
+  // bitmap.invert();
+  // bitmap.inverse();
 
-  createBitmap(filePaths[3], bitmap);                //create
+  createBitmap(filePaths[2], bitmap);                //create
 
 
 });

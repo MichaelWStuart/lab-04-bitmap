@@ -3,10 +3,9 @@ module.exports = class Bitmap {
     this.os = buffer.toString('utf8', 0, 2);
     this.size = buffer.readUInt32LE(2);
     this.offset = buffer.readUInt32LE(10);
-
     this.dibHeaderSize = buffer.readUInt32LE(14)
-    this.colorTable = buffer.toString('hex', 55, this.offset-1).match(/.{1,8}/g)
-
+    this.colorTable = buffer.toString('hex', 54, 1078).match(/.{1,8}/g)
+    this.colorTableBuffer = buffer.slice(54,1078)
     this.bufferClone = buffer;
     this.transformType = '';
   }
@@ -21,7 +20,8 @@ module.exports = class Bitmap {
 
   updateColorTable(str) {
 
-    this.bufferClone.write(str, 55, ((this.offset-1-55)/8), 'hex')
+    this.bufferClone.write(str, 54, 1078, 'hex')
+    // this.bufferClone.write(str, 54, 1078);
   }
 
   inverse() {
@@ -35,25 +35,44 @@ module.exports = class Bitmap {
     this.updateColorTable(rgbValues.join(''));
   }
 
+  invert() {
+    this.transformType = 'inverted';
+    for(var i = 0; i < this.colorTableBuffer.length; i++) {
+      this.colorTableBuffer[i] = Math.floor(255 - this.colorTableBuffer[i]);
+    }
+  }
 
-  grayscale() {
-    this.transformType = 'grayscale'
-    const rgbValues = [...this.colorTable].map(a => {
-      // let intColors = [parseInt(a.slice(0, 2), 16), parseInt(a.slice(2,4), 16), parseInt(a.slice(4, 6), 16)];
-      let one = parseInt(a.slice(0,2), 16);
-      let two = parseInt(a.slice(2,4), 16);
-      let three = parseInt(a.slice(4, 6), 16);
-      let average = Math.floor((one + two + three)/3);
-      one = average.length === 1 ? `0${average.toString(16)}` : average.toString(16);
-      two = average.length === 1 ? `0${average.toString(16)}` : average.toString(16);
-      three = average.length === 1 ? `0${average.toString(16)}` : average.toString(16);
-      let rgbValue = [one, two, three].join('')+'00';
-      console.log(rgbValue);
-      return rgbValue;
-    })
-    console.log(rgbValues.join(''));
-     this.updateColorTable(rgbValues.join(''));
-  };
+  greyscale() {
+    this.transformType = 'greyscale';
+    for(var i = 0; i < this.colorTableBuffer.length; i+=4) {
+      let averageGrey = Math.floor((this.colorTableBuffer[i] = this.colorTableBuffer[i+1] = this.colorTableBuffer[i+2])/3);
+      this.colorTableBuffer[i] = averageGrey;
+      this.colorTableBuffer[i+1] = averageGrey;
+      this.colorTableBuffer[i+2] = averageGrey;
+    }
+  }
+
+  colorScale(color) {
+    if (color !== 'red' && color !== 'blue' && color !== 'green') {
+      throw new Error('please enter either red, green, or blue')
+    } else {
+      this.transformType = `${color}-scale`;
+
+      let i;
+
+      if (color === 'red')
+        i = 2;
+      if (color === 'green')
+        i = 1;
+      if (color === 'blue')
+        i = 0;
+
+      for(i; i < this.colorTableBuffer.length; i+=4) {
+        this.colorTableBuffer[i] = this.colorTableBuffer[i] +
+        Math.floor(.8 * (255-this.colorTableBuffer[i]));
+      }
+    }
+  }
 
   blueify(){
     this.transformType = 'blueified';
