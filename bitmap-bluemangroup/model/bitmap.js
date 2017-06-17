@@ -73,6 +73,27 @@ module.exports = class Bitmap {
     }
   }
 
+  deColorScale(color) {
+    if (color !== 'red' && color !== 'blue' && color !== 'green') {
+      throw new Error('please enter either red, green, or blue')
+    } else {
+      this.transformType = `${color}-removed`;
+
+      let i;
+
+      if (color === 'red')
+        i = 2;
+      if (color === 'green')
+        i = 1;
+      if (color === 'blue')
+        i = 0;
+
+      for(i; i < this.colorTableBuffer.length; i+=4) {
+        this.colorTableBuffer[i] = 0;
+      }
+    }
+  }
+
   blueify(){
     this.transformType = 'blueified';
     const rgbValues = [...this.colorTable].map(a => {

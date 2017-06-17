@@ -8,7 +8,9 @@ const filePaths = [
   './assets/house.bmp',
   './assets/newpicpls.bmp',
   './assets/non-palette-bitmap.bmp',
-  './assets/Katy-sisters.bmp'
+  './assets/Katy-sisters.bmp',
+  './assets/Katy-sisters-blue-removed.bmp',
+  './assets/Katy-sisters-blue-removed-green-removed.bmp',
 ];
 
 const parseBitmap = (filePath, callback) =>
@@ -22,7 +24,7 @@ const createBitmap = (filePath, bitmap) => {
   });
 };
 
-parseBitmap(filePaths[5], (err, data) => {          //parse
+parseBitmap(filePaths[7], (err, data) => {          //parse
   if (err) return console.log(err);
 
   let bitmap = new Bitmap(data);                    //instantiate
@@ -33,12 +35,15 @@ parseBitmap(filePaths[5], (err, data) => {          //parse
   // bitmap.colorScale('blue');                         //transform
   // bitmap.colorScale('red');
   bitmap.colorScale('green');
+  // bitmap.deColorScale('blue');
+  // bitmap.deColorScale('red');
+  // bitmap.deColorScale('green');
   // bitmap.blueify();
   // bitmap.greyscale();
   // bitmap.invert();
   // bitmap.inverse();
 
-  createBitmap(filePaths[5], bitmap);                //create
+  createBitmap(filePaths[7], bitmap);                //create
 
 
 });
