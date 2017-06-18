@@ -21,13 +21,18 @@ const createBitmap = (filePath, bitmap) => {
   });
 };
 
-parseBitmap(filePaths[3], (err, data) => {          //parse
+parseBitmap(filePaths[2], (err, data) => {
   if (err) return console.log(err);
 
-  let bitmap = new Bitmap(data);                    //instantiate
+  const bitmap = new Bitmap(data);
+  const name = process.argv[2]
+  const method = bitmap[name] ? name : 'unidentified'
 
-  bitmap.blueify();                                 //transform
+  console.log(method)
 
-  createBitmap(filePaths[3], bitmap);                //create
+  createBitmap(filePaths[2], bitmap);
 
 });
+
+
+process.argv.forEach((v, i) => i === 2 && console.log(v))
