@@ -14,7 +14,7 @@ const files = [
 
 // const display = data => console.log(data)
 
-readBitmap.getFileHeader = (file) => fs.readFile(file, (err, data) => data.slice(0, 14)))
+readBitmap.getFileHeader = (file) => fs.readFile(file, (err, data) => data.slice(0, 14))
 
 readBitmap.getDIBHeader = (file) => fs.readFile(file, (err, data) => data.slice(15, 54))
 

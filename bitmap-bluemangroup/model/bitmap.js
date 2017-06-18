@@ -51,6 +51,7 @@ module.exports = class Bitmap {
     }
   }
 
+
   colorScale(color) {
     if (color !== 'red' && color !== 'blue' && color !== 'green') {
       throw new Error('please enter either red, green, or blue')
