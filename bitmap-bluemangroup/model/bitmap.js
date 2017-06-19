@@ -1,9 +1,11 @@
+'use strict';
+
 module.exports = class Bitmap {
   constructor(buffer) {
     this.os = buffer.toString('utf8', 0, 2);
-    this.size = buffer.readUInt32LE(2);
-    this.offset = buffer.readUInt32LE(10);
-    this.dibHeaderSize = buffer.readUInt32LE(14)
+    // this.size = buffer.readUInt32LE(2);
+    // this.offset = buffer.readUInt32LE(10);
+    // this.dibHeaderSize = buffer.readUInt32LE(14)
     this.colorTable = buffer.toString('hex', 54, 1078).match(/.{1,8}/g)
     this.colorTableBuffer = buffer.slice(54,1078)
     this.bufferClone = buffer;

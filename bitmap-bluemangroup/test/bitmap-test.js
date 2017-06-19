@@ -1,33 +1,33 @@
 'use strict';
 
-
-const reader = require('../model/bitmap.js');
-const notSure = require('../model/constructor.js');
+const Bitmap = require('../model/bitmap.js');
 const expect = require('expect');
 
+let testBitmap = new Bitmap([0]);
 
-
-describe('file-ops.js', function(){
-  describe('buffer modification', function(){
-    it('should return modified buffer hex values? (this is too vague/wrong....?)', function(){
-      let something = needSomethingHereSoTestSeesItAsAFunction.grayscale(['01010101, 00110011, 00010001, 00000000'])
-      expect(something).toEqual(['0011, 0011, 0011, 0000']);
-    });
-  });
-});
-
-// describe('file-handler.js', function() {
-//   describe('#grayScale', function() {
-//     fileHandler.readFromFile('bitmap.bmp', 'grayScale', bitmapBuilder);
-//     it('should create a new .bmp file with grayscaled colors', function(done) {
-//       let testdir = [];
-//       fs.readdir('data/', function(err, files) {
-//         if (err) throw err;
-//         testdir = files;
-//         console.log(testdir);
-//       });
-//       done();
-//       expect(testdir).to.include('bitmap-grayscaled.bmp');
-//     });
-//   });
-// });
+describe('bitmap.js', function(){
+  describe('invert', function(){
+    it('should invert the color table', function(){
+      let testInvert = testBitmap;
+      testInvert.colorTableBuffer = [0,0,0]
+      testInvert.invert();
+      expect(testInvert.colorTableBuffer).toEqual([255,255,255]);
+    })
+  })
+  describe('greyscale', function(){
+    it('should average the colors and return the average for all three - RGB', function(){
+      let testGrey = testBitmap;
+      testGrey.colorTableBuffer = [0, 50, 100]
+      testGrey.greyscale();
+      expect(testGrey.colorTableBuffer).toEqual([50,50,50]);
+    })
+  })
+  describe('colorScale', function(){
+    it('should increase the red level by 80% the remaining distance to 255', function(){
+      let testRed = testBitmap;
+      testRed.colorTableBuffer = [0,0,0]
+      testRed.colorScale('red');
+      expect(testRed.colorTableBuffer).toEqual([0,0,204]);
+    })
+  })
+})
