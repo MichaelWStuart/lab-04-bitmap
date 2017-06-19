@@ -3,9 +3,9 @@
 module.exports = class Bitmap {
   constructor(buffer) {
     this.os = buffer.toString('utf8', 0, 2);
-    // this.size = buffer.readUInt32LE(2);
-    // this.offset = buffer.readUInt32LE(10);
-    // this.dibHeaderSize = buffer.readUInt32LE(14)
+    this.size = buffer.slice(2,4);
+    this.offset = buffer.slice(10,14);
+    this.dibHeaderSize = buffer.slice(14,54)
     this.colorTable = buffer.toString('hex', 54, 1078).match(/.{1,8}/g)
     this.colorTableBuffer = buffer.slice(54,1078)
     this.bufferClone = buffer;
@@ -25,6 +25,8 @@ module.exports = class Bitmap {
     this.bufferClone.write(str, 54, 1078, 'hex')
   }
 
+//First attempt. Translates from buffer to hex then back again.
+
   inverse() {
     this.transformType = 'inversed';
     const rgbValues = [...this.colorTable].map(a => {
@@ -35,6 +37,8 @@ module.exports = class Bitmap {
     });
     this.updateColorTable(rgbValues.join(''));
   }
+
+//Second attempt. Manipulates buffer directly.
 
   invert() {
     this.transformType = 'inverted';
@@ -53,6 +57,7 @@ module.exports = class Bitmap {
     }
   }
 
+//Alters red/green/blue ratios, increasing the chosen color by 80% the remaining distance to 255.
 
   colorScale(color) {
     if (color !== 'red' && color !== 'blue' && color !== 'green') {
@@ -76,6 +81,8 @@ module.exports = class Bitmap {
     }
   }
 
+//For fun. Reduces the chosen color to 0.
+
   deColorScale(color) {
     if (color !== 'red' && color !== 'blue' && color !== 'green') {
       throw new Error('please enter either red, green, or blue')
@@ -96,6 +103,8 @@ module.exports = class Bitmap {
       }
     }
   }
+
+//Manipulates the blue levels by translating from hex and back again.
 
   blueify(){
     this.transformType = 'blueified';
